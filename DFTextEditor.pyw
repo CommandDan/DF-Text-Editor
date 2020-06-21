@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
+import json
+
+
 
 
 class MenuBar:
@@ -18,7 +21,13 @@ class MenuBar:
         file_dropdown.add_separator()
         file_dropdown.add_command(label='Exit', command=parent.app.destroy)
 
+        options_dropdown = Menu(menubar, font=font_specs, tearoff=0)
+        options_dropdown.add_command(label='Preferences', command=parent.optionsmenu.open_preferences, accelerator='Ctrl+,')
+
         menubar.add_cascade(label='File', menu=file_dropdown)
+        menubar.add_cascade(label='Options', menu=options_dropdown)
+
+
 
 
 class StatusBar:
@@ -74,6 +83,18 @@ class StatusBar:
 
 
 
+class OptionsMenu:
+
+    def __init__(self, parent):
+
+        font_specs = ('Segoe UI', 12)
+    
+    def open_preferences(self, *args):
+        print('hello there')
+
+
+
+
 class DFTextEditor:
 
     def __init__(self, app):
@@ -93,6 +114,7 @@ class DFTextEditor:
         self.textarea.pack(side=LEFT, fill=BOTH, expand=True)
         self.scrollbar.pack(side=RIGHT, fill=Y)
 
+        self.optionsmenu = OptionsMenu(self)
         self.menubar = MenuBar(self)
         self.statusbar = StatusBar(self)
 
@@ -154,6 +176,7 @@ class DFTextEditor:
         self.textarea.bind('<Control-s>', self.save)
         self.textarea.bind('<Control-S>', self.save_as)
         self.textarea.bind('<Key>', self.statusbar.when_file_update)
+        self.textarea.bind('<Control-,>', self.optionsmenu.open_preferences)
 
 
 
