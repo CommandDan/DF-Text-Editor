@@ -100,7 +100,7 @@ class DFTextEditor:
     def __init__(self, app):
         app.title('Untitled - DF Text Editor')
         app.geometry('1000x600')
-        app.iconbitmap('D:\Python Projects\DF Text Editor\DFLogo.ico')
+        app.iconbitmap('DFLogo.ico')
 
         font_specs = ('Segoe UI', 14)
 
