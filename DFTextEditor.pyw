@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 import json
 
 
@@ -19,7 +20,7 @@ class MenuBar:
         file_dropdown.add_command(label='Save', command=parent.save, accelerator='Ctrl+S')
         file_dropdown.add_command(label='Save As', command=parent.save_as, accelerator='Ctrl+Shift+S')
         file_dropdown.add_separator()
-        file_dropdown.add_command(label='Exit', command=parent.app.destroy)
+        file_dropdown.add_command(label='Exit', command=parent.exit_app)
 
         options_dropdown = Menu(menubar, font=font_specs, tearoff=0)
         options_dropdown.add_command(label='Preferences', command=parent.optionsmenu.open_preferences, accelerator='Ctrl+,')
@@ -177,6 +178,22 @@ class DFTextEditor:
         self.textarea.bind('<Control-S>', self.save_as)
         self.textarea.bind('<Key>', self.statusbar.when_file_update)
         self.textarea.bind('<Control-,>', self.optionsmenu.open_preferences)
+    
+    def exit_app(self):
+        if not self.filesaved:
+            if messagebox.askokcancel('Quit (Unsaved progress)', 'You have unsaved progress. Are you sure you want to quit?'):
+                self.app.quit()
+        else:
+            self.app.quit()
+
+    def setup_protocols(self):
+        self.app.protocol('WM_DELETE_WINDOW', when_exitting)
+
+
+
+
+def when_exitting():
+    df.exit_app()
 
 
 
@@ -184,4 +201,5 @@ class DFTextEditor:
 if __name__ == '__main__':
     app = Tk()
     df = DFTextEditor(app)
+    df.setup_protocols()
     app.mainloop()
